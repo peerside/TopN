@@ -36,7 +36,7 @@ Download or clone this repository
 $ git clone https://github.com/peerside/TopN.git
 ```
 
-Run some tests
+Run some manual tests (should print out produce top 10 values)
 ```
 $ cd TopN
 $ python TopN.py data/data-1M.txt --jobconf mapreduce.job.reduces=1 --jobconf mapreduce.job.maps=5
