@@ -16,12 +16,11 @@ The associated code demonstrates a simple heap based approach (to reduce complex
 
 The initial code drop has been tested on OS X 10.10.5. It is not particularly the fastest solution and should be considered a first pass ripe for optization ! It is lacking in tests and doesn't yet support the sbmisson of jobs to AWS EMR, Hadoop or Google Dataproc. As such it should be considered a prototype vs production code.
 
+### Dependecies
+* [python 3](https://www.python.org/downloads/mac-osx/)
+* [MrJob](https://github.com/Yelp/mrjob)
 
-### How to Install
-TopN is a python 3 project that relies on mrjob. 
-
-On MacOS:
-
+### How to Install on Mac OSX
 Install python 3
 ```
 $ brew install python 3
