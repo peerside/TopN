@@ -1,9 +1,7 @@
 # TopN
-TopN Experiment
+Given an arbitrary large file (e.g. 200GB) where each row contains a number; identify the top N largest numbers.
 
 ### What is this ?
-This an initial implementation of a TopN challange in Python. Given an arbitrary large file (e.g. 200GB) where each row contains a number; identify the top N largest numbers.
-
 The simplest approach to the problem is to sort the file and retrieve the top N values and O(n log n) complexity - i.e. we get significently slower as we iincrease the size of the dataset (e.g. $ sort -n big-file-100M.txt | head -n 10 )
 
 Alternatively we recognise that we're only interested in the top N values. If we scan the data once keeping track of the top N values we signicently reduce the complexity of the approach. If we leverage an ordered heap (aka priority queue) to track the top N values as we scan we only really care whether each value is larger than the smallest value in the heap. Keeping track of the smallest heap value incurs some additional complexity is O(k log k), retrieving and updating the smallest value is O(1) and scanning the file is O(n) where k is the size of the heap but the end result is O(n + k log k) which is much more attractive.
