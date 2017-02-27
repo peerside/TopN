@@ -11,9 +11,9 @@ Alternatively we can recognise that since we're only interested in the top N val
 
 In reality, while the complexity of our approach is important so is the size of the data and processing required for a fast, predictable and reliable solution.
 
-The associated code demonstrates a simple heap based approach (to reduce complexity) and a basic map reduce pattern to allow for scalability. 
+The associated code demonstrates a simple heap based approach (to reduce complexity) combined with a simple map reduce pattern to allow for scale up to multiple CPU or nodes. It's not the fastest approach (at 100M records it matches the sort based approach above) but it allows for horizontal scalability by running and larger machine with more CPUS and mappers or across an existing hadoop, EMR or Dataproc cluster.
 
-The initial code drop has been tested on OS X 10.10.5. It is not particularly the fastest solution and should be considered a first pass ripe for optization ! It is lacking in tests and doesn't yet support the sbmisson of jobs to AWS EMR, Hadoop or Google Dataproc. As such it should be considered a prototype vs production code.
+The initial code drop has been tested on OS X 10.10.5. It has been manualluy tested in inline (no parallel processing) and local (process per mapper) modes. It has not been tested against external runtimes. As such it should currently considered a prototype.
 
 
 ### Dependecies
@@ -36,16 +36,18 @@ Download or clone this repository
 $ git clone https://github.com/peerside/TopN.git
 ```
 
-Run a simple test
+Run some tests
 ```
 $ cd TopN
 $ python TopN.py data/data-1M.txt --jobconf mapreduce.job.reduces=1 --jobconf mapreduce.job.maps=5
+$ python TopN.py data/data-1M.txt -r local --jobconf mapreduce.job.reduces=1 --jobconf mapreduce.job.maps=5
+$
 ```
 
 To test with larger datasets generate test data with seq and shuggle with gshuf and increase the number of map jobs accordingly 
 ```
-$ seq -f%.0f 0 10000000 | gshuf > data/data-10M.txt
-$ python TopN.py data/data-10M.txt --jobconf mapreduce.job.reduces=1 --jobconf mapreduce.job.maps=100
+$ seq -f%.0f 0 100000000 | gshuf > data/data-100M.txt
+$ python TopN.py data/data-10M.txt -r local --jobconf mapreduce.job.reduces=1 --jobconf mapreduce.job.maps=10
 ```
 
 If you don't have gshuf you can get it from coreutils
