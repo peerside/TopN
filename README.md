@@ -1,16 +1,21 @@
 # TopN
 Given an arbitrary large file (e.g. 200GB) where each row contains a number; identify the top N largest numbers.
 
-### What is this ?
-The simplest approach to the problem is to sort the file and retrieve the top N values and O(n log n) complexity - i.e. we get significently slower as we iincrease the size of the dataset (e.g. $ sort -n big-file-100M.txt | head -n 10 )
+### To Sort or Not to Sort ?
+One of the conceptually simplest approaches to the problem is to sort the data and retrieve the top N values.
+```
+$ sort -n big-file-100M.txt | head -n 10 )
+```
+This works for smaller data sets but has a complexity and O(n log n) so starts to hurt as we increase the size of the dataset.
 
-Alternatively we recognise that we're only interested in the top N values. If we scan the data once keeping track of the top N values we signicently reduce the complexity of the approach. If we leverage an ordered heap (aka priority queue) to track the top N values as we scan we only really care whether each value is larger than the smallest value in the heap. Keeping track of the smallest heap value incurs some additional complexity is O(k log k), retrieving and updating the smallest value is O(1) and scanning the file is O(n) where k is the size of the heap but the end result is O(n + k log k) which is much more attractive.
+Alternatively we can recognise that since we're only interested in the top N values we don't need to sort the entire dataset. Instead we can scan the data once keeping track of the top N values. Even better - if we leverage an ordered heap (aka priority queue) to track the top N values we only really have to check, for each scanned row, whether it's larger than the smallest value in the heap - an O(1) operation. Keeping the heap ordered incurs some additional complexity at O(k log k) but assuming N is much smaller tha the data to ne scanned that's much more attractive than before. So overall - checking the smallest value is O(1), scanning the file is O(n) and maintaing the heap is O(k log k) so the end result is approximatly O(n + k log k).
 
 In reality, while the complexity of our approach is important so is the size of the data and processing required for a fast, predictable and reliable solution.
 
-The associated code demonstrates a simple heap based approach (to reduce complexity) and a basic map reduce pattern to allow for scalability. The mrjob framework is used for map reduce to allow local development before deploying to a local hadoop, AWS EMR or Google Dataproc system. 
+The associated code demonstrates a simple heap based approach (to reduce complexity) and a basic map reduce pattern to allow for scalability. 
 
-The initial code runs fine locally now (Feb 27 2017) but will require additional effort (test and debugging) to deploy remotely. 
+The initial code drop has been tested on OS X 10.10.5. It is not particularly the fastest solution and should be considered a first pass ripe for optization ! It is lacking in tests and doesn't yet support the sbmisson of jobs to AWS EMR, Hadoop or Google Dataproc. As such it should be considered a prototype vs production code.
+
 
 ### How to Install
 TopN is a python 3 project that relies on mrjob. 
