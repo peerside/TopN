@@ -1,10 +1,9 @@
 # TopN
 Given an arbitrary large file (e.g. 200GB) where each row contains a number; identify the top N largest numbers.
 
-### To Sort or Not to Sort ?
 One of the conceptually simplest approaches to the problem is to sort the data and retrieve the top N values.
 ```
-$ sort -n big-file-100M.txt | head -n 10 )
+$ sort -n big-file-100M.txt | head -n 10
 ```
 This works for smaller data sets but has a complexity and O(n log n) so starts to hurt as we increase the size of the dataset.
 
@@ -16,9 +15,11 @@ The associated code demonstrates a simple heap based approach (to reduce complex
 
 The initial code drop has been tested on OS X 10.10.5. It is not particularly the fastest solution and should be considered a first pass ripe for optization ! It is lacking in tests and doesn't yet support the sbmisson of jobs to AWS EMR, Hadoop or Google Dataproc. As such it should be considered a prototype vs production code.
 
+
 ### Dependecies
 * [python 3](https://www.python.org/downloads/mac-osx/)
 * [MrJob](https://github.com/Yelp/mrjob)
+
 
 ### How to Install on Mac OSX
 Install python 3
@@ -38,13 +39,15 @@ $ git clone https://github.com/peerside/TopN.git
 Run a simple test
 ```
 $ cd TopN
-$ python TopN.py data/data-small.txt --jobconf mapreduce.job.reduces=1 --jobconf mapreduce.job.maps=10
+$ python TopN.py data/data-1M.txt --jobconf mapreduce.job.reduces=1 --jobconf mapreduce.job.maps=5
 ```
 
-To test with larger datasets generate test data with seq and shuggle with gshuf.  
+To test with larger datasets generate test data with seq and shuggle with gshuf and increase the number of map jobs accordingly 
 ```
-$ seq -f%.0f 0 10000000 | gshuf > data-10M.txt
+$ seq -f%.0f 0 10000000 | gshuf > data/data-10M.txt
+$ python TopN.py data/data-10M.txt --jobconf mapreduce.job.reduces=1 --jobconf mapreduce.job.maps=100
 ```
+
 If you don't have gshuf you can get it from coreutils
 ```
 $ brew install coreutils
