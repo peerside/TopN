@@ -15,6 +15,8 @@ The associated code demonstrates a simple heap based approach (to reduce complex
 
 The initial code drop has been tested on OS X 10.10.5. It has been manualluy tested in inline (no parallel processing) and local (process per mapper) modes. It has not been tested against external runtimes. As such it should currently considered a prototype.
 
+### Getting the Code
+Download from https://github.com/peerside/TopN
 
 ### Dependecies
 * [python 3](https://www.python.org/downloads/mac-osx/)
